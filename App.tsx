@@ -1,6 +1,6 @@
 
-import React, { useState } from 'react';
-import { GoogleGenAI } from '@google/genai';
+import React, { useState } from 'https://esm.sh/react@19.0.0';
+import { GoogleGenAI } from 'https://esm.sh/@google/genai@1.34.0';
 import { GameStatus, GameLog } from './types';
 
 const App: React.FC = () => {
@@ -26,7 +26,6 @@ const App: React.FC = () => {
     if (!apiKey) return;
     setIsTestingKey(true);
     try {
-      // Create AI instance with the provided key
       const ai = new GoogleGenAI({ apiKey });
       const response = await ai.models.generateContent({
         model: 'gemini-3-flash-preview',
@@ -105,7 +104,7 @@ const App: React.FC = () => {
         <div className="bg-white/10 backdrop-blur-md p-8 rounded-2xl shadow-2xl w-full max-w-md border border-white/20">
           <div className="text-center mb-8">
             <i className="fas fa-robot text-6xl text-cyan-400 mb-4 animate-bounce"></i>
-            <h1 className="text-3xl font-bold mb-2">Gemini High-Low</h1>
+            <h1 className="text-3xl font-bold mb-2 text-white">Gemini High-Low</h1>
             <p className="text-gray-300">게임을 시작하기 위해 Google AI Studio API 키를 입력해주세요.</p>
           </div>
           <div className="space-y-4">
@@ -122,15 +121,9 @@ const App: React.FC = () => {
               className="w-full bg-cyan-600 hover:bg-cyan-500 disabled:bg-gray-600 text-white font-bold py-3 rounded-lg transition-colors flex items-center justify-center gap-2"
             >
               {isTestingKey ? (
-                <>
-                  <i className="fas fa-spinner animate-spin"></i>
-                  연결 테스트 중...
-                </>
+                <><i className="fas fa-spinner animate-spin"></i> 연결 테스트 중...</>
               ) : (
-                <>
-                  <i className="fas fa-play"></i>
-                  테스트 및 시작
-                </>
+                <><i className="fas fa-play"></i> 테스트 및 시작</>
               )}
             </button>
           </div>
@@ -144,7 +137,7 @@ const App: React.FC = () => {
       <header className="flex justify-between items-center mb-10 bg-white/5 p-4 rounded-xl border border-white/10">
         <div className="flex items-center gap-3">
           <i className="fas fa-brain text-cyan-400 text-2xl"></i>
-          <h2 className="text-xl font-bold uppercase tracking-widest">Gemini High-Low</h2>
+          <h2 className="text-xl font-bold uppercase tracking-widest text-white">Gemini High-Low</h2>
         </div>
         <div className="flex items-center gap-2 text-sm text-green-400">
           <span className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></span>
@@ -164,7 +157,7 @@ const App: React.FC = () => {
               </div>
             )}
             <i className={`fas ${status === GameStatus.WON ? 'fa-crown text-yellow-400' : 'fa-comment-dots text-cyan-400'} text-4xl mb-6`}></i>
-            <p className="text-2xl font-medium leading-relaxed italic">"{aiMessage}"</p>
+            <p className="text-2xl font-medium leading-relaxed italic text-white">"{aiMessage}"</p>
           </div>
 
           {status === GameStatus.WON ? (
@@ -183,12 +176,12 @@ const App: React.FC = () => {
                 value={guess}
                 onChange={(e) => setGuess(e.target.value)}
                 placeholder="1 ~ 100 사이 숫자"
-                className="flex-grow bg-white/5 border border-white/20 rounded-2xl px-6 py-4 text-2xl focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:border-transparent transition-all text-white"
+                className="flex-grow bg-white/5 border border-white/20 rounded-2xl px-6 py-4 text-2xl focus:outline-none focus:ring-2 focus:ring-cyan-500 transition-all text-white"
                 autoFocus
               />
               <button
                 type="submit"
-                className="bg-cyan-600 hover:bg-cyan-500 px-8 py-4 rounded-2xl font-bold text-xl shadow-lg transition-transform active:scale-95 text-white"
+                className="bg-cyan-600 hover:bg-cyan-500 px-8 py-4 rounded-2xl font-bold text-xl text-white shadow-lg transition-transform active:scale-95"
               >
                 Go!
               </button>
@@ -197,11 +190,11 @@ const App: React.FC = () => {
         </div>
 
         <div className="bg-black/20 rounded-3xl border border-white/10 p-6 flex flex-col max-h-[600px]">
-          <h3 className="text-xl font-bold mb-4 flex items-center gap-2">
+          <h3 className="text-xl font-bold mb-4 flex items-center gap-2 text-white">
             <i className="fas fa-history text-gray-400"></i>
             기록 ({logs.length})
           </h3>
-          <div className="flex-grow overflow-y-auto space-y-3 pr-2 custom-scrollbar">
+          <div className="flex-grow overflow-y-auto space-y-3 pr-2 custom-scrollbar text-white">
             {logs.length === 0 ? (
               <div className="h-full flex items-center justify-center text-gray-500 italic">
                 아직 시도한 기록이 없습니다.
@@ -235,7 +228,6 @@ const App: React.FC = () => {
         .custom-scrollbar::-webkit-scrollbar { width: 6px; }
         .custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
         .custom-scrollbar::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.1); border-radius: 10px; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
       `}</style>
     </div>
   );
