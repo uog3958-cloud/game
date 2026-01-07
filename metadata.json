@@ -1,0 +1,7 @@
+{
+  "name": "Gemini AI High-Low Challenge",
+  "description": "An interactive number guessing game (1-100) featuring an AI companion that provides hints, witty commentary, and voice interactions using Gemini API.",
+  "requestFramePermissions": [
+    "microphone"
+  ]
+}
