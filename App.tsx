@@ -1,5 +1,5 @@
 
-import React, { useState, useEffect, useCallback, useRef } from 'react';
+import React, { useState } from 'react';
 import { GoogleGenAI } from '@google/genai';
 import { GameStatus, GameLog } from './types';
 
@@ -14,7 +14,6 @@ const App: React.FC = () => {
   const [aiMessage, setAiMessage] = useState<string>('반가워요! 숫자를 맞춰보세요.');
   const [isAiThinking, setIsAiThinking] = useState<boolean>(false);
 
-  // Initialize game
   const startGame = () => {
     const num = Math.floor(Math.random() * 100) + 1;
     setTargetNumber(num);
@@ -27,20 +26,22 @@ const App: React.FC = () => {
     if (!apiKey) return;
     setIsTestingKey(true);
     try {
+      // Create AI instance with the provided key
       const ai = new GoogleGenAI({ apiKey });
       const response = await ai.models.generateContent({
         model: 'gemini-3-flash-preview',
-        contents: 'Say "READY"'
+        contents: 'Confirm connection by saying "READY"',
       });
-      if (response.text?.includes('READY')) {
+      
+      if (response.text) {
         setIsKeyValid(true);
         startGame();
       } else {
-        alert('API 키가 유효하지 않거나 통신에 실패했습니다.');
+        alert('API 응답이 올바르지 않습니다.');
       }
     } catch (error) {
       console.error(error);
-      alert('API 키 테스트 중 오류가 발생했습니다: ' + (error as Error).message);
+      alert('API 키가 유효하지 않거나 통신 오류가 발생했습니다.');
     } finally {
       setIsTestingKey(false);
     }
@@ -105,7 +106,7 @@ const App: React.FC = () => {
           <div className="text-center mb-8">
             <i className="fas fa-robot text-6xl text-cyan-400 mb-4 animate-bounce"></i>
             <h1 className="text-3xl font-bold mb-2">Gemini High-Low</h1>
-            <p className="text-gray-300">게임을 시작하기 위해 Google AI Studio에서 발급받은 API 키를 입력해주세요.</p>
+            <p className="text-gray-300">게임을 시작하기 위해 Google AI Studio API 키를 입력해주세요.</p>
           </div>
           <div className="space-y-4">
             <input
@@ -132,9 +133,6 @@ const App: React.FC = () => {
                 </>
               )}
             </button>
-            <p className="text-xs text-gray-400 text-center">
-              * 입력하신 키는 서버에 저장되지 않으며 브라우저 세션에서만 사용됩니다.
-            </p>
           </div>
         </div>
       </div>
@@ -155,7 +153,6 @@ const App: React.FC = () => {
       </header>
 
       <main className="grid grid-cols-1 md:grid-cols-2 gap-8 flex-grow">
-        {/* Left Side: Game UI */}
         <div className="space-y-6">
           <div className={`relative p-8 rounded-3xl transition-all duration-500 ${status === GameStatus.WON ? 'bg-green-600/20 border-green-500/50 scale-105 shadow-[0_0_30px_rgba(34,197,94,0.3)]' : 'bg-white/10 border-white/10'} border flex flex-col items-center min-h-[300px] justify-center text-center overflow-hidden`}>
             {isAiThinking && (
@@ -166,7 +163,6 @@ const App: React.FC = () => {
                 </div>
               </div>
             )}
-            
             <i className={`fas ${status === GameStatus.WON ? 'fa-crown text-yellow-400' : 'fa-comment-dots text-cyan-400'} text-4xl mb-6`}></i>
             <p className="text-2xl font-medium leading-relaxed italic">"{aiMessage}"</p>
           </div>
@@ -187,12 +183,12 @@ const App: React.FC = () => {
                 value={guess}
                 onChange={(e) => setGuess(e.target.value)}
                 placeholder="1 ~ 100 사이 숫자"
-                className="flex-grow bg-white/5 border border-white/20 rounded-2xl px-6 py-4 text-2xl focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:border-transparent transition-all"
+                className="flex-grow bg-white/5 border border-white/20 rounded-2xl px-6 py-4 text-2xl focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:border-transparent transition-all text-white"
                 autoFocus
               />
               <button
                 type="submit"
-                className="bg-cyan-600 hover:bg-cyan-500 px-8 py-4 rounded-2xl font-bold text-xl shadow-lg transition-transform active:scale-95"
+                className="bg-cyan-600 hover:bg-cyan-500 px-8 py-4 rounded-2xl font-bold text-xl shadow-lg transition-transform active:scale-95 text-white"
               >
                 Go!
               </button>
@@ -200,7 +196,6 @@ const App: React.FC = () => {
           )}
         </div>
 
-        {/* Right Side: Log History */}
         <div className="bg-black/20 rounded-3xl border border-white/10 p-6 flex flex-col max-h-[600px]">
           <h3 className="text-xl font-bold mb-4 flex items-center gap-2">
             <i className="fas fa-history text-gray-400"></i>
@@ -213,7 +208,7 @@ const App: React.FC = () => {
               </div>
             ) : (
               logs.map((log) => (
-                <div key={log.timestamp} className="bg-white/5 p-4 rounded-xl border-l-4 border-cyan-500 animate-fadeIn">
+                <div key={log.timestamp} className="bg-white/5 p-4 rounded-xl border-l-4 border-cyan-500">
                   <div className="flex justify-between items-center mb-1">
                     <span className="text-xl font-bold">내 추측: <span className="text-cyan-400">{log.guess}</span></span>
                     <span className={`px-3 py-1 rounded-full text-xs font-bold ${
@@ -233,30 +228,14 @@ const App: React.FC = () => {
       </main>
 
       <footer className="mt-auto pt-10 text-center text-gray-500 text-sm">
-        &copy; 2025 AI Number Master • Powered by Google Gemini 3 Flash
+        &copy; 2025 AI Number Master • Powered by Google Gemini
       </footer>
 
       <style>{`
-        .custom-scrollbar::-webkit-scrollbar {
-          width: 6px;
-        }
-        .custom-scrollbar::-webkit-scrollbar-track {
-          background: transparent;
-        }
-        .custom-scrollbar::-webkit-scrollbar-thumb {
-          background: rgba(255, 255, 255, 0.1);
-          border-radius: 10px;
-        }
-        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
-          background: rgba(255, 255, 255, 0.2);
-        }
-        @keyframes fadeIn {
-          from { opacity: 0; transform: translateY(10px); }
-          to { opacity: 1; transform: translateY(0); }
-        }
-        .animate-fadeIn {
-          animation: fadeIn 0.3s ease forwards;
-        }
+        .custom-scrollbar::-webkit-scrollbar { width: 6px; }
+        .custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.1); border-radius: 10px; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
       `}</style>
     </div>
   );
