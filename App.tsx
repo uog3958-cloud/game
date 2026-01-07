@@ -169,7 +169,6 @@ const App: React.FC = () => {
 
       <main className="grid grid-cols-1 lg:grid-cols-12 gap-8 flex-grow">
         <div className="lg:col-span-8 space-y-8">
-          {/* AI 스테이지 */}
           <div className={`relative p-12 rounded-[3rem] transition-all duration-1000 min-h-[400px] flex flex-col items-center justify-center text-center overflow-hidden border-2 ${
             status === GameStatus.WON 
             ? 'bg-green-500/10 border-green-500/30 shadow-[0_0_80px_rgba(34,197,94,0.15)]' 
@@ -197,7 +196,6 @@ const App: React.FC = () => {
             </h3>
           </div>
 
-          {/* 입력 창 */}
           <div className="bg-gradient-to-r from-white/5 to-white/[0.02] p-8 rounded-[2.5rem] border border-white/10 shadow-2xl">
             {status === GameStatus.WON ? (
               <button
@@ -232,15 +230,9 @@ const App: React.FC = () => {
                 </button>
               </form>
             )}
-            <div className="flex justify-center gap-8 mt-6 text-gray-600 font-bold text-xs tracking-widest uppercase">
-              <span className="flex items-center gap-2"><i className="fas fa-check-circle text-cyan-500/50"></i> 1-100 Range</span>
-              <span className="flex items-center gap-2"><i className="fas fa-check-circle text-cyan-500/50"></i> AI Response</span>
-              <span className="flex items-center gap-2"><i className="fas fa-check-circle text-cyan-500/50"></i> History Log</span>
-            </div>
           </div>
         </div>
 
-        {/* 히스토리 사이드바 */}
         <div className="lg:col-span-4 flex flex-col h-[600px] lg:h-auto">
           <div className="bg-black/40 rounded-[2.5rem] border border-white/5 p-8 flex flex-col flex-grow overflow-hidden shadow-2xl backdrop-blur-md">
             <div className="flex justify-between items-center mb-8 border-b border-white/5 pb-4">
@@ -287,13 +279,8 @@ const App: React.FC = () => {
         </div>
       </main>
 
-      <footer className="mt-12 py-8 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-4 text-gray-600 text-[10px] tracking-[0.3em] uppercase font-bold">
-        <span>&copy; 2025 AI Number Challenge</span>
-        <div className="flex gap-6">
-          <span className="hover:text-cyan-500 cursor-help">Secure Storage</span>
-          <span className="hover:text-cyan-500 cursor-help">Privacy Shield</span>
-          <span className="hover:text-cyan-500 cursor-help">Latency Optimized</span>
-        </div>
+      <footer className="mt-12 py-8 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-4 text-gray-600 text-[10px] tracking-[0.3em] uppercase font-bold text-center">
+        <span>&copy; 2025 AI Number Challenge • Built with Gemini API</span>
       </footer>
 
       <style>{`
